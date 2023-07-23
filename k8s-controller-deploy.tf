@@ -6,6 +6,7 @@ resource "proxmox_vm_qemu" "k8s_controller" {
 
     # k8s-controller settings
     name = "k8s-controller"
+    tags = "k8s-controllers"
     desc = "Kubernetes controller"
     vmid = 100
     target_node = "pve"
@@ -51,6 +52,7 @@ resource "proxmox_vm_qemu" "k8s_controller" {
               # add ip address to dynamic Ansible inventory and wait for instance to be up and ready before proceeding
     command = "printf '\n${self.default_ipv4_address}' >> k8s_controller.txt"
   }
+
   provisioner "local-exec" {
     when    = destroy
     command = "sed -iE '/^[0-9]/d' k8s_controller.txt"
