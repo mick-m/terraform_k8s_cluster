@@ -28,4 +28,12 @@ resource "proxmox_vm_qemu" "k8s_node_2" {
         bridge = "vmbr0"
         model  = "virtio"
     }
+  provisioner "local-exec" {
+              # add ip address to dynamic Ansible inventory
+    command = "printf '\n${self.default_ipv4_address}' >> k8s_nodes.txt"
+  }
+}
+output "proxmox_ip_address_k8s_node_2" {
+      description = "Current IP Default"
+      value = proxmox_vm_qemu.k8s_node_2.*.default_ipv4_address
 }
